@@ -1,16 +1,25 @@
 ###Структура программы
 
-```objectivec
-void main();
+1. Простая точка входа
+```cpp
+void main() {}
 ```
 
-```objectivec
-int main(int argc, char **argv);
+2. Точка входа с передачей аргументов и возвратом результата
+```cpp
+int main(int argc, char **argv) {
+    return 0;
+}
 ```
 
-```objectivec
-int main(int argc, char **argv, char **env);
+3. Точка входа с передачей аргументов, переменных окружения и возвратом результат
+```cpp
+int main(int argc, char **argv, char **env) {
+    return 0;
+}
 ```
+
+
 
 ###Основные типы данных. Описание различных типов, переменные и константы. Символьные строки. Препроцессор языка Си
 

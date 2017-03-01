@@ -6,9 +6,6 @@
 #define MAIN_WITH_ARGS      1
 #define MAIN_WITH_ENV       2
 
-
-#define MAIN_CONFIGURATION  MAIN_WITH_ENV
-
 #if MAIN_CONFIGURATION == MAIN_EMPTY
 void
 main() {}
