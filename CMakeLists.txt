@@ -36,3 +36,9 @@ include_directories(01_c_basic_memories)
 add_subdirectory(lib/3rdparty/gtest/googletest)
 add_subdirectory(01_c_basic_memories)
 add_subdirectory(tests)
+
+
+file(COPY
+        ${CMAKE_SOURCE_DIR}/data/c_basic_content.txt
+        DESTINATION
+        ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/data)
