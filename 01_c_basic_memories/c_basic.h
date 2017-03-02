@@ -25,8 +25,8 @@ struct hash_table {
 };
 
 struct hash_table *ht_create(int size);
-void ht_put(struct hash_table *table, char *key, char *value);
-char *ht_get(struct hash_table *table, char *key);
+void ht_put(struct hash_table *table, const char *key, const char *value);
+char *ht_get(struct hash_table *table, const char *key);
 void ht_free(struct hash_table *hash_table);
 
 

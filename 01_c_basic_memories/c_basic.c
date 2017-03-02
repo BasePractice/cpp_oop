@@ -8,7 +8,7 @@
 /** HASH: https://gist.github.com/tonious/1377667 */
 
 unsigned long
-__ht_hash(struct hash_table *table, char *key) {
+__ht_hash(struct hash_table *table, const char *key) {
 
     unsigned long int val = 0;
     int i = 0;
@@ -22,7 +22,7 @@ __ht_hash(struct hash_table *table, char *key) {
 }
 
 struct entry *
-__ht_create_pair(char *key, char *value) {
+__ht_create_pair(const char *key, const char *value) {
     struct entry *pair;
 
     pair = malloc(sizeof(struct entry));
@@ -47,11 +47,26 @@ ht_create(int size) {
 
 void
 ht_free(struct hash_table *hash_table) {
+    int i;
+    struct entry *next = NULL;
 
+    for (i = 0; i < hash_table->size; ++i) {
+        next = hash_table->table[i];
+        while (next != NULL) {
+            struct entry *current = next;
+            next = next->next;
+            if (current->key)
+                free(current->key);
+            if (current->value)
+                free(current->value);
+            free(current);
+        }
+    }
+    free(hash_table);
 }
 
 void
-ht_put(struct hash_table *table, char *key, char *value) {
+ht_put(struct hash_table *table, const char *key, const char *value) {
     unsigned long bin = 0;
     struct entry *pair = NULL;
     struct entry *next = NULL;
@@ -71,7 +86,6 @@ ht_put(struct hash_table *table, char *key, char *value) {
         next->value = strdup(value);
     } else {
         pair = __ht_create_pair(key, value);
-
         if (next == table->table[bin]) {
             pair->next = next;
             table->table[bin] = pair;
@@ -86,7 +100,7 @@ ht_put(struct hash_table *table, char *key, char *value) {
 
 
 char *
-ht_get(struct hash_table *table, char *key) {
+ht_get(struct hash_table *table, const char *key) {
     unsigned long bin = 0;
     struct entry *pair;
 
@@ -106,9 +120,7 @@ ht_get(struct hash_table *table, char *key) {
 
 int
 cb_file_content(const char *const file_name, unsigned char **content, size_t *content_size) {
-    FILE *fd;
-
-    fd = fopen(file_name, "rb");
+    FILE *fd = fopen(file_name, "rb");
     if (fd != NULL) {
         fseek(fd, 0, SEEK_END);
         (*content_size) = (size_t) ftell(fd);
