@@ -35,6 +35,7 @@ include_directories(01_c_basic_memories)
 include_directories(02_cpp_classes)
 
 add_subdirectory(lib/3rdparty/gtest/googletest)
+add_subdirectory(00_c_vk_embed_cli)
 add_subdirectory(01_c_basic_memories)
 add_subdirectory(02_cpp_classes)
 add_subdirectory(tests)

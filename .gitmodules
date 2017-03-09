@@ -1,3 +1,9 @@
 [submodule "lib/3rdparty/gtest"]
 	path = lib/3rdparty/gtest
 	url = https://github.com/google/googletest.git
+[submodule "lib/3rdparty/mongoose"]
+	path = lib/3rdparty/mongoose
+	url = https://github.com/cesanta/mongoose.git
+[submodule "lib/3rdparty/frozen"]
+	path = lib/3rdparty/frozen
+	url = https://github.com/cesanta/frozen.git
