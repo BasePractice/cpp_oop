@@ -118,17 +118,18 @@ ht_get(struct hash_table *table, const char *key) {
     }
 }
 
-int
+size_t
 cb_file_content(const char *const file_name, unsigned char **content, size_t *content_size) {
     FILE *fd = fopen(file_name, "rb");
     if (fd != NULL) {
+        size_t read;
         fseek(fd, 0, SEEK_END);
         (*content_size) = (size_t) ftell(fd);
         rewind(fd);
         (*content) = (unsigned char *) calloc(1, (*content_size));
-        fread((*content), (*content_size), 1, fd);
+        read = fread((*content), 1, (*content_size), fd);
         fclose(fd);
-        return 1;
+        return read;
     }
     return 0;
 }

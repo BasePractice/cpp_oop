@@ -9,10 +9,14 @@ public:
 
     void SetUp() {
         std::string directory = TEST_DATA_DIRECTORY;
-        int ret;
+        size_t ret;
 
         ret = cb_file_content((directory + std::string("/c_basic_content.txt")).c_str(), &buffer, &size);
-        ASSERT_EQ(ret, 1);
+#if defined(_WIN32)
+        ASSERT_EQ(ret, 644);
+#else
+        ASSERT_EQ(ret, 631);
+#endif
     }
 
     void TearDown() {
@@ -62,7 +66,11 @@ TEST_F(CBasicHash, GetPut) {
 }
 
 TEST_F(CBasicMemories, ReadFileContent) {
+#if defined(_WIN32)
     ASSERT_EQ(size, 644);
+#else
+    ASSERT_EQ(size, 631);
+#endif
     ASSERT_TRUE(buffer != nullptr);
 }
 
@@ -71,7 +79,11 @@ TEST_F(CBasicMemories, Statistic) {
 
     cb_statistic_content(buffer, size, &statistic);
     EXPECT_EQ(statistic.symbols, 26);
+#if defined(_WIN32)
     EXPECT_EQ(statistic.whitespaces, 118);
+#else
+    EXPECT_EQ(statistic.whitespaces, 105);
+#endif
     EXPECT_EQ(statistic.digits, 0);
     EXPECT_EQ(statistic.alphabets, 500);
     EXPECT_EQ(statistic.lines, 13);

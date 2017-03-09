@@ -30,7 +30,7 @@ char *ht_get(struct hash_table *table, const char *key);
 void ht_free(struct hash_table *hash_table);
 
 
-int cb_file_content(const char *const file_name, unsigned char **content, size_t *content_size);
+size_t cb_file_content(const char *const file_name, unsigned char **content, size_t *content_size);
 void cb_free_content(unsigned char **content);
 void cb_statistic_content(const unsigned char *content, size_t content_size, struct cb_statistic *statistic);
 
