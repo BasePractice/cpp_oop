@@ -34,10 +34,12 @@ endif ()
 include_directories(lib/3rdparty/gtest/googletest/include)
 include_directories(01_c_basic_memories)
 include_directories(02_cpp_classes)
+include_directories(03_cpp_ref_pointer)
 
 add_subdirectory(lib/3rdparty/gtest/googletest)
 add_subdirectory(01_c_basic_memories)
 add_subdirectory(02_cpp_classes)
+add_subdirectory(03_cpp_ref_pointer)
 add_subdirectory(tests)
 
 
