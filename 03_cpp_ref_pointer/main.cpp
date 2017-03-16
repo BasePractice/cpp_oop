@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <iostream>
+#include "matrix.h"
 
 static int add(int a, int b) {
     return a + b;
@@ -150,7 +151,13 @@ main(int argc, char **argv) {
         call(fun);
     }
 
-
+    //Matrix
+    {
+        Matrix matrix(10, 10);
+        Matrix &ref = matrix;
+        Matrix p(matrix);
+        Matrix k = matrix;
+    }
 #if defined(_WIN32_WINNT)
     system("pause");
 #endif
