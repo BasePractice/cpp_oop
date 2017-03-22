@@ -1,7 +1,6 @@
 #include <cstdlib>
 #include <string>
 #include <iomanip>
-#include <malloc.h>
 #include <iostream>
 
 class PureBase {
@@ -133,7 +132,9 @@ namespace DynamicMemory {
         delete [] forClasses;
 
         forClass = new(static_pointer) DynamicClass;
-        fprintf(stdout, "0x%X == 0x%X\n", forClass, static_pointer);
+        fprintf(stdout, "%p == %p\n",
+                reinterpret_cast<void *>(forClass),
+                reinterpret_cast<void *>(static_pointer));
         forClass->~DynamicClass();
         delete [] static_pointer;
         return 0;
