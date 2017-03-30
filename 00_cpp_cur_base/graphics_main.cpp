@@ -1,36 +1,35 @@
 #include <cstdlib>
 #include <unistd.h>
-#include <stdlib.h>
 #include <cstdio>
 #include "graphics.h"
 
 int
 main(int argc, char **argv) {
-    Console *g = Console::newConsole();
+    Console *c = Console::newConsole();
 
-    volatile bool need_refresh = true;
+    volatile bool need_refresh;
     int x = 10, y = 10;
 
-    g->clear();
-    g->write(0, 0, "Enter 'q' to exit");
-    g->move(x, y);
-    g->write("o");
-    for (int ch = g->read_ch(); ch != 'q' && ch != 'Q';) {
-        switch (g->to_key(ch)) {
-            case Console::KEY_DOWN:
-                g->down();
+    c->clear();
+    c->write(0, 0, "Enter 'q' to exit");
+    c->move(x, y);
+    c->write("o");
+    for (int ch = c->read_ch(); ch != 'q' && ch != 'Q';) {
+        switch (c->translate_key(ch)) {
+            case Console::KeyDown:
+                c->down();
                 need_refresh = true;
                 break;
-            case Console::KEY_UP:
-                g->up();
+            case Console::KeyUp:
+                c->up();
                 need_refresh = true;
                 break;
-            case Console::KEY_RIGHT:
-                g->right();
+            case Console::KeyRight:
+                c->right();
                 need_refresh = true;
                 break;
-            case Console::KEY_LEFT:
-                g->left();
+            case Console::KeyLeft:
+                c->left();
                 need_refresh = true;
                 break;
             default:
@@ -41,16 +40,15 @@ main(int argc, char **argv) {
         }
         if (need_refresh) {
             char buffer[256];
-            need_refresh = false;
-            g->clear();
+            c->clear();
             sprintf(buffer, "Enter 'q' to exit. Current: %d", ch);
-            g->write(0, 0, buffer);
-            g->write("o");
-            g->refresh();
+            c->write(0, 0, buffer);
+            c->write("o");
+            c->update();
         }
-        ch = g->read_ch();
+        ch = c->read_ch();
     }
-    delete g;
+    delete c;
     return EXIT_SUCCESS;
 }
 

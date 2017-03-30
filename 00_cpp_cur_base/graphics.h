@@ -27,17 +27,17 @@ public:
 
     virtual void down() = 0;
 
-    virtual void refresh() = 0;
+    virtual void update() = 0;
 
     enum Key {
-        KEY_UP,
-        KEY_DOWN,
-        KEY_LEFT,
-        KEY_RIGHT,
-        UNKNOWN
+        KeyUp,
+        KeyDown,
+        KeyLeft,
+        KeyRight,
+        KeyUnknown
     };
 
-    virtual enum Key to_key(int key) = 0;
+    virtual enum Key translate_key(int key) = 0;
 
     static Console *newConsole();
 };

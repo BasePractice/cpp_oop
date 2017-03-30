@@ -96,22 +96,22 @@ public:
         SetConsoleCursorPosition(h_output, coordScreen);
     }
 
-    enum Key to_key(int key) override  {
+    enum Key translate_key(int key) override  {
         switch (key) {
             case VK_UP:
-                return KEY_UP;
+                return KeyUp;
             case VK_DOWN:
-                return KEY_DOWN;
+                return KeyDown;
             case VK_LEFT:
-                return KEY_LEFT;
+                return KeyLeft;
             case VK_RIGHT:
-                return KEY_RIGHT;
+                return KeyRight;
             default:
-                return UNKNOWN;
+                return KeyUnknown;
         }
     }
 
-    void refresh() override {
+    void update() override {
         FlushFileBuffers(h_output);
     }
 

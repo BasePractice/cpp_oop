@@ -32,57 +32,63 @@ public:
     }
 
     void left() override {
-        --y;
-        if (y < 0)
-            y = 0;
-        move(x, y);
+        --_y;
+        if (_y < 0)
+            _y = 0;
+        move(_x, _y);
     }
 
     void right() override {
-        ++y;
-        if (y >= width() - 1)
-            y = width() - 1;
-        move(x, y);
+        ++_y;
+        if (_y >= width() - 1)
+            _y = width() - 1;
+        move(_x, _y);
     }
 
     void up() override {
-        --x;
-        if (x < 0)
-            x = 0;
-        move(x, y);
+        --_x;
+        if (_x < 0)
+            _x = 0;
+        move(_x, _y);
     }
 
     void down() override {
-        ++x;
-        if (x >= height() - 1)
-            x = height() - 1;
-        move(x, y);
+        ++_x;
+        if (_x >= height() - 1)
+            _x = height() - 1;
+        move(_x, _y);
     }
 
     void write(int x, int y, const char *const text) override {
         mvprintw(x, y, text);
     }
 
-    void move(int x, int y) override {
-        wmove(stdscr, x, y);
+    void write(const char *const text) override {
+        mvprintw(_x, _y, text);
     }
 
-    void refresh() override {
+    void move(int x, int y) override {
+        wmove(stdscr, x, y);
+        _x = x;
+        _y = y;
+    }
+
+    void update() override {
         ::refresh();
     }
 
-    enum Key to_key(int key) override  {
+    enum Key translate_key(int key) override  {
         switch (key) {
-            case ::KEY_UP:
-                return Graphics::KEY_UP;
-            case ::KEY_DOWN:
-                return Graphics::KEY_DOWN;
-            case ::KEY_LEFT:
-                return Graphics::KEY_LEFT;
-            case ::KEY_RIGHT:
-                return Graphics::KEY_RIGHT;
+            case KEY_UP:
+                return KeyUp;
+            case KEY_DOWN:
+                return KeyDown;
+            case KEY_LEFT:
+                return KeyLeft;
+            case KEY_RIGHT:
+                return KeyRight;
             default:
-                return UNKNOWN;
+                return KeyUnknown;
         }
     }
 
