@@ -52,6 +52,11 @@ public:
                         }
                         break;
                     }
+                    case WINDOW_BUFFER_SIZE_EVENT: {
+                        //_width = record.Event.WindowBufferSizeEvent.dwSize.X;
+                        //_height = record.Event.WindowBufferSizeEvent.dwSize.Y;
+                        break;
+                    }
                     default:
                         break;
                 }
