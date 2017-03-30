@@ -7,6 +7,8 @@ set(CPP_SOURCES
 if (APPLE)
     find_package(Curses REQUIRED)
     list(APPEND CPP_SOURCES ncurses_graphics.cpp)
+else(WIN32)
+    list(APPEND CPP_SOURCES win32_console_graphics.cpp)
 endif ()
 
 

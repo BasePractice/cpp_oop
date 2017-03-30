@@ -2,12 +2,14 @@
 #include <unistd.h>
 #include "graphics.h"
 
-class NCursesGraphics final: public Graphics {
+class CursesConsole final : public Console {
     int _width;
     int _height;
+    int _x;
+    int _y;
 public:
 
-    NCursesGraphics() {
+    CursesConsole() {
         initscr();
         noecho();
         curs_set(FALSE);
@@ -15,11 +17,13 @@ public:
         _width = getmaxx(stdscr);
         _height = getmaxy(stdscr);
 
+        _x = 0;
+        _y = 0;
         nodelay(stdscr, TRUE);
         keypad(stdscr, TRUE);
     }
 
-    ~NCursesGraphics() {
+    ~CursesConsole() {
         endwin();
     }
 
@@ -27,59 +31,58 @@ public:
         ::clear();
     }
 
-    void test() override {
-        volatile bool need_refresh = true;
-        int x = 10, y = 10;
+    void left() override {
+        --y;
+        if (y < 0)
+            y = 0;
+        move(x, y);
+    }
 
-        clear();
-        mvprintw(0, 0, "Enter 'q' to exit");
-        mvprintw(x, y, "o");
-        for (int ch = read_ch(); ch != 'q' && ch != 'Q';) {
-            switch (ch) {
-                case KEY_DOWN:
-                    ++x;
-                    if (x >= height() - 1)
-                        x = height() - 1;
-                    wmove(stdscr, x, y);
-                    need_refresh = true;
-                    break;
-                case KEY_UP:
-                    --x;
-                    if (x < 0)
-                        x = 0;
-                    wmove(stdscr, x, y);
-                    need_refresh = true;
-                    break;
-                case KEY_RIGHT:
-                    ++y;
-                    if (y >= width() - 1)
-                        y = width() - 1;
-                    wmove(stdscr, x, y);
-                    need_refresh = true;
-                    break;
-                case KEY_LEFT:
-                    --y;
-                    if (y < 0)
-                        y = 0;
-                    wmove(stdscr, x, y);
-                    need_refresh = true;
-                    break;
-                default:
-                    need_refresh = false;
-                    //tick
-                    usleep(10000);
-                    break;
-            }
-            if (need_refresh) {
-                char buffer[256];
-                need_refresh = false;
-                clear();
-                sprintf(buffer, "Enter 'q' to exit. Current: %d", ch);
-                mvprintw(0, 0, buffer);
-                mvprintw(x, y, "o");
-                refresh();
-            }
-            ch = read_ch();
+    void right() override {
+        ++y;
+        if (y >= width() - 1)
+            y = width() - 1;
+        move(x, y);
+    }
+
+    void up() override {
+        --x;
+        if (x < 0)
+            x = 0;
+        move(x, y);
+    }
+
+    void down() override {
+        ++x;
+        if (x >= height() - 1)
+            x = height() - 1;
+        move(x, y);
+    }
+
+    void write(int x, int y, const char *const text) override {
+        mvprintw(x, y, text);
+    }
+
+    void move(int x, int y) override {
+        wmove(stdscr, x, y);
+    }
+
+    void refresh() override {
+        ::refresh();
+    }
+
+    enum Key to_key(int key) override  {
+        switch (key) {
+            case ::KEY_UP:
+                return Graphics::KEY_UP;
+            case ::KEY_DOWN:
+                return Graphics::KEY_DOWN;
+            case ::KEY_LEFT:
+                return Graphics::KEY_LEFT;
+            case ::KEY_RIGHT:
+                return Graphics::KEY_RIGHT;
+            default:
+                return UNKNOWN;
         }
     }
 
@@ -97,8 +100,8 @@ public:
 
 };
 
-Graphics *
-Graphics::newGraphics() {
-    return new NCursesGraphics;
+Console *
+Console::newConsole() {
+    return new CursesConsole;
 }
 
