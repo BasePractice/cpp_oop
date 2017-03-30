@@ -36,12 +36,14 @@ include_directories(01_c_basic_memories)
 include_directories(02_cpp_classes)
 include_directories(03_cpp_ref_pointer)
 include_directories(04_cpp_dyn_memory)
+include_directories(05_cpp_override_operators)
 
 add_subdirectory(lib/3rdparty/gtest/googletest)
 add_subdirectory(01_c_basic_memories)
 add_subdirectory(02_cpp_classes)
 add_subdirectory(03_cpp_ref_pointer)
 add_subdirectory(04_cpp_dyn_memory)
+add_subdirectory(05_cpp_override_operators)
 add_subdirectory(tests)
 
 
