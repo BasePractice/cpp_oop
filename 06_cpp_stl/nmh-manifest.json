@@ -1,0 +1,9 @@
+{
+  "name": "ru.pastor.nm.example",
+  "description": "Тест",
+  "path": "C:\\work\\base_practice\\cpp_oop\\.build\\nmh.exe",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://knldjmfmopnpolahpmmgbagdohdnhkik/"
+  ]
+}

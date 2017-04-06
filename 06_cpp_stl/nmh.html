@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Тест</title>
+</head>
+<body>
+<script language="JavaScript">
+    /*var port = chrome.runtime.connectNative('ru.pastor.nm.example');*/
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log(chrome.runtime);
+        const port = chrome.runtime.connect('ru.pastor.nm.example');
+        console.log(port);
+        port.onMessage.addListener(function (msg) {
+            console.log(msg);
+        });
+        port.onDisconnect.addListener(function () {
+            console.log("Disconnected");
+        });
+        port.postMessage({type: "command", property: "cmd", args: ["/k", "echo"]});
+    });
+</script>
+</body>
+</html>
