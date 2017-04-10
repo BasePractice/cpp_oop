@@ -6,10 +6,14 @@
 </head>
 <body>
 <script language="JavaScript">
+    var browser_runtime = navigator.userAgent.match(/Firefox/i) ? browser.runtime : chrome.runtime;
     /*var port = chrome.runtime.connectNative('ru.pastor.nm.example');*/
+
     document.addEventListener("DOMContentLoaded", function () {
-        console.log(chrome.runtime);
-        const port = chrome.runtime.connect('ru.pastor.nm.example');
+        window.addEventListener("message", function(event) {
+            console.log(event);
+        }, false);
+        const port = browser_runtime.connect('ru.pastor.nm.example');
         console.log(port);
         port.onMessage.addListener(function (msg) {
             console.log(msg);

@@ -9,8 +9,11 @@ class Win32Console final : public Console {
     HANDLE h_output;
     HANDLE h_input;
     COORD _coord;
+
+    int _ch;
+
 public:
-    Win32Console() : h_output(GetStdHandle(STD_OUTPUT_HANDLE)), h_input(GetStdHandle(STD_INPUT_HANDLE)) {
+    Win32Console() : h_output(GetStdHandle(STD_OUTPUT_HANDLE)), h_input(GetStdHandle(STD_INPUT_HANDLE)), _ch(-1) {
         CONSOLE_SCREEN_BUFFER_INFO csbi;
         CONSOLE_CURSOR_INFO info;
         SetConsoleMode(h_input, ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT);
@@ -38,6 +41,10 @@ public:
     }
 
     int read_ch() const override {
+        return _ch;
+    }
+
+    Event event() override {
         INPUT_RECORD record;
         DWORD read = 0;
         if (ReadConsoleInput(h_input, &record, 1, &read)) {
@@ -46,23 +53,26 @@ public:
                     case KEY_EVENT: {
                         if (record.Event.KeyEvent.bKeyDown) {
                             if (record.Event.KeyEvent.uChar.UnicodeChar == 0) {
-                                return record.Event.KeyEvent.wVirtualKeyCode;
+                                _ch = record.Event.KeyEvent.wVirtualKeyCode;
+                            } else {
+                                _ch = record.Event.KeyEvent.uChar.UnicodeChar;
                             }
-                            return record.Event.KeyEvent.uChar.UnicodeChar;
+                        } else {
+                            _ch = -1;
                         }
-                        break;
+                        return KEYBOARD;
                     }
                     case WINDOW_BUFFER_SIZE_EVENT: {
-                        //_width = record.Event.WindowBufferSizeEvent.dwSize.X;
-                        //_height = record.Event.WindowBufferSizeEvent.dwSize.Y;
-                        break;
+                        _width = record.Event.WindowBufferSizeEvent.dwSize.X;
+                        _height = record.Event.WindowBufferSizeEvent.dwSize.Y;
+                        return WINDOW;
                     }
                     default:
                         break;
                 }
             }
         }
-        return -1;
+        return NONE;
     }
 
     void write(int x, int y, const char *const text) override {

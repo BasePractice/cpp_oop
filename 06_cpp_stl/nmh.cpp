@@ -61,19 +61,47 @@ void test() {
     std::cout << deserialized_request << std::endl;
 }
 
-
 int
 main(int argc, char **argv) {
-    while (std::cin.good()) {
-        std::string string_request;
+    bool is_running = true;
+    unsigned char length[4];
+    int buffer_length = 1024;
+    char *buffer = new char[buffer_length];
+    freopen(nullptr, "rb", stdin);
+    freopen(nullptr, "wb", stdout);
+
+    while (is_running) {
         ns::request request;
 
-        std::getline(std::cin, string_request);
-        json json_request = json::parse(string_request);
-        ns::from_json(json_request, request);
-        std::cout << json_request << std::endl;
+        int ret = fread(length, sizeof(char), sizeof(length)/sizeof(length[0]), stdin);
+        if (ret == 4) {
+            int size = *((int *)length);
+            if (size > buffer_length) {
+                delete[] buffer;
+                buffer_length = size + 256;
+                buffer = new char[buffer_length];
+            }
+            fprintf(stderr, "Await %d bytes\n", size);
+            ret = fread(buffer, sizeof(char), size, stdin);
+            if (ret == size) {
+                int write;
+                std::ostringstream stream;
+                buffer[size] = (char)0;
+                json json_request = json::parse(buffer);
+                ns::from_json(json_request, request);
+                stream << json_request;
+                const auto &content = stream.str();
+                auto content_size = content.size();
+                *((int *)length) = (int) content_size;
+                write = fwrite(length, sizeof(char), sizeof(length)/sizeof(length[0]), stdout);
+                write = fwrite(content.c_str(), sizeof(char), content_size, stdout);
+                continue;
+            }
+        }
+        is_running = false;
     }
-    test();
+    delete [] buffer;
+//    test();
     return 0;
 }
 

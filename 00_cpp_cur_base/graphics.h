@@ -37,6 +37,14 @@ public:
         KeyUnknown
     };
 
+    enum Event {
+        KEYBOARD,
+        WINDOW,
+        NONE
+    };
+
+    virtual Event event() = 0;
+
     virtual enum Key translate_key(int key) = 0;
 
     static Console *newConsole();
