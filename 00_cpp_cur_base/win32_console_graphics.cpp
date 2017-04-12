@@ -57,10 +57,10 @@ public:
                             } else {
                                 _ch = record.Event.KeyEvent.uChar.UnicodeChar;
                             }
+                            return KEY_DOWN;
                         } else {
-                            _ch = -1;
+                            return KEY_UP;
                         }
-                        return KEYBOARD;
                     }
                     case WINDOW_BUFFER_SIZE_EVENT: {
                         _width = record.Event.WindowBufferSizeEvent.dwSize.X;

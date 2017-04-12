@@ -38,7 +38,8 @@ public:
     };
 
     enum Event {
-        KEYBOARD,
+        KEY_DOWN,
+        KEY_UP,
         WINDOW,
         NONE
     };

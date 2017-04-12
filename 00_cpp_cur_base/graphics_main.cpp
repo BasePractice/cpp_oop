@@ -17,7 +17,7 @@ main(int argc, char **argv) {
     c->write("o");
     while (is_running) {
         switch (c->event()) {
-            case Console::KEYBOARD: {
+            case Console::KEY_DOWN: {
                 int ch = c->read_ch();
                 switch (c->translate_key(ch)) {
                     case Console::KeyDown:
