@@ -3,7 +3,8 @@ project(common CXX)
 
 set(SOURCES
         common_tests.cpp
-        c_basic_tests.cpp)
+        c_basic_tests.cpp
+        c_math_parser_tests.cpp)
 
 configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/environment.h.in

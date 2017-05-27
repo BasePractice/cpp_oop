@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <unistd.h>
 #include <cstdio>
 #include "graphics.h"
 
@@ -40,7 +39,11 @@ main(int argc, char **argv) {
                         is_running = ch != 'q' && ch != 'Q';
                         need_refresh = false;
                         //tick
+#if defined(_MSC_VER)
+						_sleep(1000);
+#else
                         usleep(10000);
+#endif
                         break;
                 }
                 break;
